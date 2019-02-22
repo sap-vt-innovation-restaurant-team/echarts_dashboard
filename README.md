@@ -1,3 +1,6 @@
+# RIOS Bashboard
+Usage: open the file in the ./presentation/presentation.html
+
 # ECharts Liquid Fill Chart
 
 Liquid Fill Chart plugin for [ECharts](https://github.com/ecomfe/echarts), which is usually used to represent data in percentage.
