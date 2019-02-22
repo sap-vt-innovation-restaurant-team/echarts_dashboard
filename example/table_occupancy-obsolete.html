@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Lobster+Two:700i" rel="stylesheet">
+    <!-- 引入 ECharts 文件 -->
+    <script src="../dist/echarts.js"></script>
+    <script src="../dist/echarts-liquidfill.js"></script>
+    <title>Title</title>
+</head>
+<body>
+<style>
+    /*html, body {*/
+        /*width: 100%;*/
+        /*height: 100%;*/
+        /*margin: 0;*/
+        /*background: #F1F7FF;*/
+    /*}*/
+
+    #main {
+        padding: 20px;
+    }
+
+    #main:after {
+        display: block;
+        content: ' ';
+        clear: both;
+    }
+
+    h1 {
+        margin: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        color: #D94854;
+    }
+
+    .chart {
+        width: 25%;
+        height: 300px;
+        float: left;
+    }
+    @media (max-width: 980px) {
+        .chart {
+            height: 200px;
+        }
+    }
+    @media (max-width: 750px) {
+        .chart {
+            width: 33.333333%;
+        }
+    }
+    @media (max-width: 500px) {
+        .chart {
+            width: 50%;
+            height: 180px;
+        }
+    }
+
+
+    .main-chart {
+        width: 100%;
+        height: 400px;
+        float: none;
+        margin: -50px 0;
+    }
+
+    .nav {
+        text-align: center;
+        margin: 10px;
+    }
+
+    a {
+        text-decoration: none;
+        background-color: #294D99;
+        transition: 0.5s;
+        color: white;
+        padding: 6px 18px;
+        border-radius: 20px;
+        margin: 0 4px;
+    }
+
+    a:hover {
+        background-color: #1598ED;
+    }
+
+    #view-more {
+        text-align: center;
+        margin: 20px 0 80px 0;
+    }
+</style>
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="main">
+    <div class="chart main-chart"></div>
+</div>
+<script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement('script');
+        hm.src = '//hm.baidu.com/hm.js?4bad1df23f079e0d12bdbef5e65b072f';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+
+    var containers = document.getElementsByClassName('chart');
+    var bgColor = '#E3F7FF';
+
+    // 指定图表的配置项和数据
+    // option = {
+    //     series: [{
+    //         type: 'liquidFill',
+    //         name: 'Liquid Fill',
+    //         data: [{
+    //             name: 'Table Booked',
+    //             value: 0.62
+    //         }],
+    //         label: {
+    //             normal: {
+    //                 formatter: '{a}\n{b}\nValue: {c}',
+    //                 textStyle: {
+    //                     fontSize: 4
+    //                 }
+    //             }
+    //         }
+    //     }]
+    // };
+
+    // option = {
+    //     // backgroundColor:'white',
+    //     series: [{
+    //         type: 'liquidFill',
+    //         data: [0.62],
+    //             label: {
+    //                 position: ['38%', '40%'],
+    //                 formatter: function () {
+    //                     return 'ECharts\nLiquid Fill';
+    //                 },
+    //                 fontSize: 20,
+    //                 color: '#deb140',
+    //                 // insideColor: bgColor
+    //             }
+    //     }]
+
+
+    var value = 0.65
+    var data = []
+    data.push(value)
+    var option = {
+        // backgroundColor: '#1b2735',
+        // title: {
+        //     text: 'CPU使用率',
+        //     textStyle: {
+        //         fontWeight: 'normal',
+        //         fontSize: 80,
+        //         color: 'rgb(97, 142, 205)'
+        //     }
+        // },
+        // series: [{
+        //     type: 'liquidFill',
+        //     data: [0.6, 0.5, 0.4, 0.3],
+        //     radius: '70%',
+        //     outline: {
+        //         show: false
+        //     }
+        // }],
+        tooltip: {
+            show: true,                 // 是否显示提示框
+            formatter: 'Availability 35%'      // 提示框显示内容,此处{b}表示各数据项名称，此项配置为默认显示项，{c}表示数据项的值，默认不显示，({d}%)表示数据项项占比，默认不显示。
+        },
+        series: [{
+            type: 'liquidFill',
+            // radius: '80%',
+            data: data,
+            color: ['#ff7a40', 'red', 'pink'],
+            // backgroundStyle: {
+            //     borderWidth: 5,
+            //     borderColor: '#deb140',//rgb(255,0,255,0.9)
+            //     color: '#ffc72b',//rgb(255,0,255,0.01)
+            //     shadowColor: 'rgba(0, 0, 0, 0.4)',
+            //     shadowBlur: 20
+            // },
+            backgroundStyle: {
+                borderColor: bgColor,
+                borderWidth: 1,
+                color: '#FFC72B',
+                shadowColor: 'rgba(0, 0, 0, 0.4)',
+                shadowBlur: 20
+            },
+            outline: {
+                show: false
+            },
+            // 提示框
+
+            label: {
+                // formatter: function () {
+                //     return value * 100 + '%';
+                // },
+                // fontSize: 20,
+                // normal: {
+                //     textStyle: {
+                //     }
+                // }
+                formatter: function () {
+                    return 'Table booked\n' +value * 100 + '%';
+                },
+                fontSize: 20,
+                color: '#D94854',
+                // fontFamily: 'Lobster Two',
+                insideColor: bgColor
+            },
+        }]
+    };
+    // series: [{
+    //     type: 'liquidFill',
+    //     data: [0.6, 0.5, 0.4, 0.3],
+    //     radius: '70%',
+    //     outline: {
+    //         show: false
+    //     }
+    // }]
+    // };
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(containers[0]);
+    myChart.setOption(option);
+    chart.setOption({
+        baseOption: option,
+        media: [{
+            query: {
+                maxWidth: 300
+            },
+            option: {
+                series: [{
+                    label: {
+                        fontSize: 20
+                    }
+                }]
+            }
+        }]
+    });
+
+    setInterval(update, 3000);
+
+    function update() {
+        var data = [];
+        var last = 1;
+        for (var i = 0; i < 4; ++i) {
+            last = Math.floor(last * (Math.random() * 0.5 + 0.5)
+                * 100) / 100;
+            data.push(last);
+        }
+        charts[1].setOption({
+            series: [{
+                data: data
+            }]
+        });
+    }
+</script>
+
+</body>
+</html>

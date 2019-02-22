@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="../dist/echarts.js"></script>
+    <title>Title</title>
+</head>
+<body>
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="main" style="width: 600px;height:400px;"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var scale = 1;
+    var echartData = [{
+        value: 351,
+        name: 'Lunch'
+    }, {
+        value: 467,
+        name: 'Dinner'
+    }]
+    var rich = {
+        yellow: {
+            color: "#ffc72b",
+            fontSize: 30 * scale,
+            padding: [5, 4],
+            align: 'center'
+        },
+        total: {
+            color: "#ffc72b",
+            fontSize: 40 * scale,
+            align: 'center'
+        },
+        white: {
+            color: "#909090",
+            align: 'center',
+            fontSize: 14 * scale,
+            padding: [21, 0]
+        },
+        blue: {
+            color: '#49dff0',
+            fontSize: 16 * scale,
+            align: 'center'
+        },
+        hr: {
+            borderColor: '#0b5263',
+            width: '100%',
+            borderWidth: 1,
+            height: 0,
+        }
+    }
+    option = {
+        // backgroundColor: '#e8e8e8',
+        title: {
+            text:'Customer Flow',
+            left:'center',
+            top:'53%',
+            padding:[24,0],
+            textStyle:{
+                color:'#909090',
+                fontSize:15*scale,
+                align:'center'
+            }
+        },
+        // legend: {
+        //     selectedMode:false,
+        //     formatter: function(name) {
+        //         var total = 0; //各科正确率总和
+        //         var averagePercent; //综合正确率
+        //         echartData.forEach(function(value, index, array) {
+        //             total += value.value;
+        //         });
+        //         return '{total|' + total + '}';
+        //     },
+        //     data: [echartData[0].name],
+        //     // data: ['高等教育学'],
+        //     // itemGap: 50,
+        //     left: 'center',
+        //     top: 'center',
+        //     icon: 'none',
+        //     align:'center',
+        //     textStyle: {
+        //         color: "#fff",
+        //         fontSize: 16 * scale,
+        //         rich: rich
+        //     },
+        // },
+
+        // graphic 是原生图形元素组件。可以支持的图形元素包括：image, text, circle, sector, ring, polygon, polyline, rect, line, bezierCurve, arc, group,
+        graphic: {
+            type: 'text',               // [ default: image ]用 setOption 首次设定图形元素时必须指定。image, text, circle, sector, ring, polygon, polyline, rect, line, bezierCurve, arc, group,
+            top: 'center',              // 描述怎么根据父元素进行定位。top 和 bottom 只有一个可以生效。如果指定 top 或 bottom，则 shape 里的 y、cy 等定位属性不再生效。『父元素』是指：如果是顶层元素，父元素是 echarts 图表容器。如果是 group 的子元素，父元素就是 group 元素。
+            left: 'center',             // 同上
+            style: {
+                text: '818',       // 文本块文字。可以使用 \n 来换行。[ default: '' ]
+                fill: '#ffc72b',           // 填充色。
+                fontSize: 24,           // 字体大小
+                fontWeight: 'bold'		// 文字字体的粗细，可选'normal'，'bold'，'bolder'，'lighter'
+            }
+        },
+
+        // 提示框
+        tooltip: {
+            show: true,                 // 是否显示提示框
+            formatter: '{b} </br> Customer:{c}people </br> Proportion:{d}%'      // 提示框显示内容,此处{b}表示各数据项名称，此项配置为默认显示项，{c}表示数据项的值，默认不显示，({d}%)表示数据项项占比，默认不显示。
+        },
+
+        series: [{
+            name: '总考生数量',
+            type: 'pie',
+            radius: ['42%', '50%'],
+            hoverAnimation: false,
+            color: ['#c487ee', '#deb140', '#49dff0', '#034079', '#6f81da', '#00ffb4'],
+            label: {
+                normal: {
+                    formatter: function(params, ticket, callback) {
+                        var total = 0; //考生总数量
+                        var percent = 0; //考生占比
+                        echartData.forEach(function(value, index, array) {
+                            total += value.value;
+                        });
+                        percent = ((params.value / total) * 100).toFixed(1);
+                        return '{white|' + params.name + '}\n{hr|}\n{yellow|' + params.value + '}\n{blue|' + percent + '%}';
+                    },
+                    rich: rich
+                },
+            },
+            labelLine: {
+                normal: {
+                    length: 55 * scale,
+                    length2: 0,
+                    lineStyle: {
+                        color: '#0b5263'
+                    }
+                }
+            },
+            data: echartData
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</body>
+</html>

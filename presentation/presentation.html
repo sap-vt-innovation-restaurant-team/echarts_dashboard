@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="../dist/echarts.js"></script>
+    <script src="../dist/echarts-liquidfill.js"></script>
+    <script src="../dist/world.js"></script>
+    <title>Restaurant Intelligent Ordering System Dashboard</title>
+    <style text="text/css">
+        /*.temp{*/
+            /*float:left;*/
+            /*padding: 0px;*/
+            /*margin: 0px;*/
+            /*height: 200px;*/
+            /*width: 200px;*/
+        /*}*/
+        #head{
+            text-align: center;
+            font-family: "Arial Black";
+            color: rgb(180, 31, 42);
+        }
+        #subhead1{
+            position:absolute;
+            top: 100px;
+            left: 40px;
+            width: 330px;
+            height: 40px;
+            font-family: "Arial";
+            color: rgb(199, 31, 42);
+        }
+        #subhead2{
+            position:absolute;
+            top: 100px;
+            left: 390px;
+            width: 590px;
+            height: 40px;
+            font-family: "Arial";
+            color: rgb(199, 31, 42);
+        }
+        #subhead4{
+            position:absolute;
+            top: 480px;
+            left: 40px;
+            width: 330px;
+            height: 40px;
+            font-family: "Arial";
+            color: rgb(199, 31, 42);
+        }
+        #subhead5{
+            position:absolute;
+            top: 480px;
+            left: 390px;
+            width: 590px;
+            height: 40px;
+            font-family: "Arial";
+            color: rgb(199, 31, 42);
+        }
+        #cf{
+            position:absolute;
+            top: 100px;
+            left: 40px;
+            width: 330px;
+            height: 300px;
+        }
+        #dn{
+            position:absolute;
+            top: 100px;
+            left: 390px;
+            width: 590px;
+            height: 300px;
+        }
+        #ff{
+            position:absolute;
+            top: 100px;
+            left: 1020px;
+            width: 300px;
+            height: 300px;
+        }
+        #to{
+            position:absolute;
+            top: 480px;
+            left: 40px;
+            width: 330px;
+            height: 300px;
+        }
+        #l{
+            position:absolute;
+            top: 520px;
+            left: 390px;
+            width: 590px;
+            height: 300px;
+        }
+        #ws{
+            position:absolute;
+            top: 480px;
+            left: 1020px;
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+<h1 id="head">Restaurant Intelligent Ordering System Dashboard</h1>
+<h2 id="subhead1">Customer Flow</h2>
+<h2 id="subhead2">Menu Item Popularity</h2>
+<h2 id="subhead4">Table Occupancy</h2>
+<h2 id="subhead5">Location</h2>
+<div style="width:100%; height:auto;">
+    <div class="temp" id="cf" >
+        <h2 class="subhead">Customer Flow</h2>
+        <script type="text/javascript">
+            // 基于准备好的dom，初始化echarts实例
+            var cfChart = echarts.init(document.getElementById('cf'));
+
+            // 指定图表的配置项和数据
+            var scale = 1;
+            var echartData = [{
+                value: 351,
+                name: 'Lunch'
+            }, {
+                value: 467,
+                name: 'Dinner'
+            }]
+            var rich = {
+                yellow: {
+                    color: "#ffc72b",
+                    fontSize: 16 * scale,
+                    padding: [5, 4],
+                    align: 'center'
+                },
+                total: {
+                    color: "#ffc72b",
+                    fontSize: 40 * scale,
+                    align: 'center'
+                },
+                white: {
+                    color: "#909090",
+                    align: 'center',
+                    fontSize: 12 * scale,
+                    padding: [21, 0]
+                },
+                blue: {
+                    color: '#49dff0',
+                    fontSize: 12 * scale,
+                    align: 'center'
+                },
+                hr: {
+                    borderColor: '#0b5263',
+                    width: '100%',
+                    borderWidth: 1,
+                    height: 0,
+                }
+            }
+            cf_option = {
+                // backgroundColor: '#e8e8e8',
+                title: {
+                    text:'Customer Flow',
+                    left:'center',
+                    top:'53%',
+                    padding:[24,0],
+                    textStyle:{
+                        color:'#909090',
+                        fontSize:12*scale,
+                        align:'center'
+                    }
+                },
+
+                // graphic 是原生图形元素组件。可以支持的图形元素包括：image, text, circle, sector, ring, polygon, polyline, rect, line, bezierCurve, arc, group,
+                graphic: {
+                    type: 'text',               // [ default: image ]用 setOption 首次设定图形元素时必须指定。image, text, circle, sector, ring, polygon, polyline, rect, line, bezierCurve, arc, group,
+                    top: 'center',              // 描述怎么根据父元素进行定位。top 和 bottom 只有一个可以生效。如果指定 top 或 bottom，则 shape 里的 y、cy 等定位属性不再生效。『父元素』是指：如果是顶层元素，父元素是 echarts 图表容器。如果是 group 的子元素，父元素就是 group 元素。
+                    left: 'center',             // 同上
+                    style: {
+                        text: '818',       // 文本块文字。可以使用 \n 来换行。[ default: '' ]
+                        fill: '#ffc72b',           // 填充色。
+                        fontSize: 24,           // 字体大小
+                        fontWeight: 'bold'		// 文字字体的粗细，可选'normal'，'bold'，'bolder'，'lighter'
+                    }
+                },
+
+                // 提示框
+                tooltip: {
+                    show: true,                 // 是否显示提示框
+                    formatter: '{b} </br> Customer:{c}people </br> Proportion:{d}%'      // 提示框显示内容,此处{b}表示各数据项名称，此项配置为默认显示项，{c}表示数据项的值，默认不显示，({d}%)表示数据项项占比，默认不显示。
+                },
+
+                series: [{
+                    name: '总考生数量',
+                    type: 'pie',
+                    radius: ['42%', '50%'],
+                    hoverAnimation: false,
+                    color: ['#c487ee', '#deb140', '#49dff0', '#034079', '#6f81da', '#00ffb4'],
+                    label: {
+                        normal: {
+                            formatter: function(params, ticket, callback) {
+                                var total = 0; //考生总数量
+                                var percent = 0; //考生占比
+                                echartData.forEach(function(value, index, array) {
+                                    total += value.value;
+                                });
+                                percent = ((params.value / total) * 100).toFixed(1);
+                                return '{white|' + params.name + '}\n{hr|}\n{yellow|' + params.value + '}\n{blue|' + percent + '%}';fontSize
+                            },
+                            rich: rich
+                        },
+                    },
+                    labelLine: {
+                        normal: {
+                            length: 55 * scale,
+                            length2: 0,
+                            lineStyle: {
+                                color: '#0b5263'
+                            }
+                        }
+                    },
+                    data: echartData
+                }]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            cfChart.setOption(cf_option);
+        </script>
+    </div>
+    <div class="temp" id="dn">
+        <script type="text/javascript">
+            // 基于准备好的dom，初始化echarts实例
+            var dnChart = echarts.init(document.getElementById('dn'));
+
+            // 指定图表的配置项和数据
+            var dn_option = {
+                dataset: {
+                    source: [
+                        ['score', 'amount', 'product'],
+                        [9.3, 12, 'Hochzeitssuppe'],
+                        [17.1, 34, 'Radler'],
+                        [24.4, 52, 'Brotzeit'],
+                        [32.1, 55, 'Sauerbraten'],
+                        [49.7, 65, 'Schweinshaxe'],
+                        [58.1, 86, 'Saure Zipfel'],
+                        [69.6, 92, 'Weihnachtskarpfen'],
+                        [73.6, 152, 'Herrencreme'],
+                        [87.7, 162, 'Kartoffelsuppe']
+                    ]
+                },
+                grid: {containLabel: true},
+                xAxis: {name: 'amount'},
+                yAxis: {type: 'category'},
+                visualMap: {
+                    orient: 'horizontal',
+                    left: 'center',
+                    min: 10,
+                    max: 100,
+                    text: ['High', 'Low'],
+                    // Map the score column to color
+                    dimension: 0,
+                    inRange: {
+                        color: ['#D7DA8B', '#E15457']
+                    }
+                },
+                series: [
+                    {
+                        type: 'bar',
+                        encode: {
+                            // Map the "amount" column to X axis.
+                            x: 'amount',
+                            // Map the "product" column to Y axis
+                            y: 'product'
+                        }
+                    }
+                ]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            dnChart.setOption(dn_option);
+        </script>
+    </div>
+    <div class="temp">
+        <img id="ff" class="temp" src="./Favorite%20Foods.png"/>
+    </div>
+</div>
+<div style="width:100%; height:auto;">
+    <div class="temp" id="to">
+        <script type="text/javascript">
+            // 基于准备好的dom，初始化echarts实例
+            var toChart = echarts.init(document.getElementById('to'));
+
+            // 指定图表的配置项和数据
+            var bgColor = '#E3F7FF';
+            var value = 0.65
+            var data = []
+            data.push(value)
+            var to_option = {
+                tooltip: {
+                    show: true,                 // 是否显示提示框
+                    formatter: 'Availability 35%'      // 提示框显示内容,此处{b}表示各数据项名称，此项配置为默认显示项，{c}表示数据项的值，默认不显示，({d}%)表示数据项项占比，默认不显示。
+                },
+                series: [{
+                    type: 'liquidFill',
+                    // radius: '80%',
+                    data: data,
+                    color: ['#ff7a40', 'red', 'pink'],
+                    // backgroundStyle: {
+                    //     borderWidth: 5,
+                    //     borderColor: '#deb140',//rgb(255,0,255,0.9)
+                    //     color: '#ffc72b',//rgb(255,0,255,0.01)
+                    //     shadowColor: 'rgba(0, 0, 0, 0.4)',
+                    //     shadowBlur: 20
+                    // },
+                    backgroundStyle: {
+                        borderColor: bgColor,
+                        borderWidth: 1,
+                        color: '#FFC72B',
+                        shadowColor: 'rgba(0, 0, 0, 0.4)',
+                        shadowBlur: 20
+                    },
+                    outline: {
+                        show: false
+                    },
+                    // 提示框
+
+                    label: {
+                        formatter: function () {
+                            return 'Table booked\n' +value * 100 + '%';
+                        },
+                        fontSize: 15,
+                        color: '#D94854',
+                        // fontFamily: 'Lobster Two',
+                        insideColor: bgColor
+                    },
+                }]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            toChart.setOption(to_option);
+        </script>
+    </div>
+    <div class="temp" id="l">
+        <script type="text/javascript">
+            // 基于准备好的dom，初始化echarts实例
+            var lChart = echarts.init(document.getElementById('l'));
+
+            // 指定图表的配置项和数据
+            var geoCoordMap = {
+                "Amsterdam": [4.895168,52.370216],
+                "Athens": [-83.357567,33.951935],
+                "Auckland": [174.763332,-36.84846],
+                "Bangkok": [100.501765,13.756331],
+                "Barcelona": [2.173403,41.385064],
+                "Beijing": [116.407395,39.904211],
+                "Berlin": [13.404954,52.520007],
+                "Bogotá": [-74.072092,4.710989],
+                "Bratislava": [17.107748,48.148596],
+                "Brussels": [4.35171,50.85034],
+                "Budapest": [19.040235,47.497912],
+                "Buenos Aires": [-58.381559,-34.603684],
+                "Bucharest": [26.102538,44.426767],
+                "Caracas": [-66.903606,10.480594],
+                "Chicago": [-87.629798,41.878114],
+                "Delhi": [77.209021,28.613939],
+                "Doha": [51.53104,25.285447],
+                "Dubai": [55.270783,25.204849],
+                "Dublin": [-6.26031,53.349805],
+                "Frankfurt": [8.682127,50.110922],
+                "Geneva": [6.143158,46.204391],
+                "Helsinki": [24.938379,60.169856],
+                "Hong Kong": [114.109497,22.396428],
+                "Istanbul": [28.978359,41.008238],
+                "Jakarta": [106.845599,-6.208763],
+                "Johannesburg": [28.047305,-26.204103],
+                "Cairo": [31.235712,30.04442],
+                "Kiev": [30.5234,50.4501],
+                "Copenhagen": [12.568337,55.676097],
+                "Kuala Lumpur": [101.686855,3.139003],
+                "Lima": [-77.042793,-12.046374],
+                "Lisbon": [-9.139337,38.722252],
+                "Ljubljana": [14.505751,46.056947],
+                "London": [-0.127758,51.507351],
+                "Los Angeles": [-118.243685,34.052234],
+                "Luxembourg": [6.129583,49.815273],
+                "Lyon": [4.835659,45.764043],
+                "Madrid": [-3.70379,40.416775],
+                "Milan": [9.185924,45.465422],
+                "Manama": [50.58605,26.228516],
+                "Manila": [120.984219,14.599512],
+                "Mexico City": [-99.133208,19.432608],
+                "Miami": [-80.19179,25.76168],
+                "Montreal": [-73.567256,45.501689],
+                "Moscow": [37.6173,55.755826],
+                "Mumbai": [72.877656,19.075984],
+                "Munich": [11.581981,48.135125],
+                "Nairobi": [36.821946,-1.292066],
+                "New York": [-74.005941,40.712784],
+                "Nicosia": [33.382276,35.185566],
+                "Oslo": [10.752245,59.913869],
+                "Paris": [2.352222,48.856614],
+                "Prague": [14.4378,50.075538],
+                "Riga": [24.105186,56.949649],
+                "Rio de Janeiro": [-43.172896,-22.906847],
+                "Rome": [12.496366,41.902783],
+                "Santiago de Chile": [-70.669265,-33.44889],
+                "São Paulo": [-46.633309,-23.55052],
+                "Seoul": [126.977969,37.566535],
+                "Shanghai": [121.473701,31.230416],
+                "Singapore": [103.819836,1.352083],
+                "Sofia": [23.321868,42.697708],
+                "Stockholm": [18.068581,59.329323],
+                "Sydney": [151.209296,-33.86882],
+                "Taipei": [121.565418,25.032969],
+                "Tallinn": [24.753575,59.436961],
+                "Tel Aviv": [34.781768,32.0853],
+                "Tokyo": [139.691706,35.689487],
+                "Toronto": [-79.383184,43.653226],
+                "Vilnius": [25.279651,54.687156],
+                "Warsaw": [21.012229,52.229676],
+                "Vienna": [16.373819,48.208174],
+                "Zurich": [8.541694,47.376887]
+            };
+            var data = [{
+                name: "Beijing",
+                value: 38
+            }, {
+                name: "Berlin",
+                value: 147
+            }, {
+                name: "Chicago",
+                value: 74
+            }, {
+                name: "Frankfurt",
+                value: 33
+            }, {
+                name: "Hong Kong",
+                value: 192
+            }, {
+                name: "London",
+                value: 35
+            }, {
+                name: "Los Angeles",
+                value: 0
+            }, {
+                name: "New York",
+                value: 36
+            }, {
+                name: "Paris",
+                value: 32
+            }, {
+                name: "Rome",
+                value: 7
+            }, {
+                name: "Sydney",
+                value: 1
+            }];
+            var convertData = function(data) {
+                var res = [];
+                for (var i = 0; i < data.length; i++) {
+                    var geoCoord = geoCoordMap[data[i].name];
+                    if (geoCoord) {
+                        res.push({
+                            name: data[i].name,
+                            value: geoCoord.concat(data[i].value)
+                        });
+                    }
+                }
+                return res;
+            };
+
+            var convertedData = [
+                convertData(data),
+                convertData(data.sort(function(a, b) {
+                    return b.value - a.value;
+                }).slice(0, 6))
+            ];
+            data.sort(function(a,b){
+                return    a.value-b.value;
+            })
+
+            var selectedItems = [];
+            var categoryData = [];
+            var barData = [];
+            //   var maxBar = 30;
+            var sum = 0;
+            var count = data.length;
+            for(var i=0;i<data.length;i++){
+                categoryData.push(data[i].name);
+                barData.push(data[i].value);
+                sum+=data[i].value;
+            }
+            console.log(categoryData);
+            console.log(sum+"   "+count)
+            l_option = {
+                // backgroundColor: '#ffffff',
+                animation: true,
+                animationDuration: 1000,
+                animationEasing: 'cubicInOut',
+                animationDurationUpdate: 1000,
+                animationEasingUpdate: 'cubicInOut',
+                // title: [{
+                //     text: '全国主要城市 业务量',
+                //     subtext: '内部数据请勿外传',
+                //     left: 'center',
+                //     textStyle: {
+                //         color: '#fff'
+                //     }
+                // }, {
+                //     id: 'statistic',
+                //     text: count ? '平均: ' +parseInt((sum / count).toFixed(4)) : '',
+                //     right: 120,
+                //     top: 40,
+                //     width: 100,
+                //     textStyle: {
+                //         color: '#fff',
+                //         fontSize: 16
+                //     }
+                // }],
+                toolbox: {
+                    iconStyle: {
+                        normal: {
+                            borderColor: '#fff'
+                        },
+                        emphasis: {
+                            borderColor: '#b1e4ff'
+                        }
+                    },
+                    feature: {
+                        dataZoom: {},
+                        brush: {
+                            type: ['rect', 'polygon', 'clear']
+                        },
+                        saveAsImage: {
+                            show: true
+                        }
+                    }
+                },
+                brush: {
+                    outOfBrush: {
+                        color: '#abc'
+                    },
+                    brushStyle: {
+                        borderWidth: 2,
+                        color: 'rgba(0,0,0,0.2)',
+                        borderColor: 'rgba(0,0,0,0.5)',
+                    },
+                    seriesIndex: [0, 1],
+                    throttleType: 'debounce',
+                    throttleDelay: 300,
+                    geoIndex: 0
+                },
+                geo: {
+                    map: 'world',
+                    silent: true,
+                    label: {
+                        emphasis: {
+                            show: false,
+                            areaColor: '#eee'
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            borderWidth: 0.2,
+                            borderColor: '#deb140'
+                        }
+                    },
+                    left: '6%',
+                    top: 40,
+                    // bottom: '54%',
+                    right: '50%',
+                    roam: true
+                    // itemStyle: {
+                    //     normal: {
+                    //         areaColor: '#323c48',
+                    //         borderColor: '#111'
+                    //     },
+                    //     emphasis: {
+                    //         areaColor: '#2a333d'
+                    //     }
+                    // }
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                grid: {
+                    right: 40,
+                    top: 100,
+                    bottom: 40,
+                    width: '30%'
+                },
+                xAxis: {
+                    type: 'value',
+                    scale: true,
+                    position: 'top',
+                    boundaryGap: false,
+                    splitLine: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLabel: {
+                        margin: 2,
+                        textStyle: {
+                            color: '#4b4b4b'
+                        }
+                    },
+                },
+                yAxis: {
+                    type: 'category',
+                    //  name: 'TOP 20',
+                    nameGap: 16,
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            color: '#464646'
+                        }
+                    },
+                    axisTick: {
+                        show: false,
+                        lineStyle: {
+                            color: '#464646'
+                        }
+                    },
+                    axisLabel: {
+                        interval: 0,
+                        textStyle: {
+                            color: '#464646'
+                        }
+                    },
+                    data: categoryData
+                },
+                series: [{
+                    // name: 'pm2.5',
+                    type: 'scatter',
+                    coordinateSystem: 'geo',
+                    data: convertedData[0],
+                    symbolSize: function(val) {
+                        return Math.max(val[2] / 10, 8);
+                    },
+                    label: {
+                        normal: {
+                            formatter: '{b}',
+                            position: 'right',
+                            show: false
+                        },
+                        emphasis: {
+                            show: true
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: '#ddb926',
+                            position: 'right',
+                            show: true
+                        }
+                    }
+                }, {
+                    //  name: 'Top 5',
+                    type: 'effectScatter',
+                    coordinateSystem: 'geo',
+                    data: convertedData[0],
+                    symbolSize: function(val) {
+                        return Math.max(val[2] / 10, 8);
+                    },
+                    showEffectOn: 'emphasis',
+                    rippleEffect: {
+                        brushType: 'stroke'
+                    },
+                    hoverAnimation: true,
+                    label: {
+                        normal: {
+                            formatter: '{b}',
+                            position: 'right',
+                            show: true
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: '#dd7124',
+                            shadowBlur: 10,
+                            shadowColor: '#333'
+                        }
+                    },
+                    zlevel: 1
+                }, {
+                    id: 'bar',
+                    zlevel: 2,
+                    type: 'bar',
+                    symbol: 'none',
+                    itemStyle: {
+                        normal: {
+                            color: '#dd7124'
+                        }
+                    },
+
+                    data: data
+                }]
+            };
+
+
+            // 使用刚指定的配置项和数据显示图表。
+            lChart.setOption(l_option);
+        </script>
+    </div>
+    <div class="temp" >
+        <img id="ws" class="temp" src="./Weekly%20Sales.png"/>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="../dist/echarts.js"></script>
+    <script src="../dist/echarts-liquidfill.js"></script>
+    <title>Title</title>
+</head>
+<body>
+<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+<div id="main" style="width: 600px;height:400px;"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var bgColor = '#E3F7FF';
+    var value = 0.65
+    var data = []
+    data.push(value)
+    var option = {
+        // backgroundColor: '#1b2735',
+        // title: {
+        //     text: 'CPU使用率',
+        //     textStyle: {
+        //         fontWeight: 'normal',
+        //         fontSize: 80,
+        //         color: 'rgb(97, 142, 205)'
+        //     }
+        // },
+        // series: [{
+        //     type: 'liquidFill',
+        //     data: [0.6, 0.5, 0.4, 0.3],
+        //     radius: '70%',
+        //     outline: {
+        //         show: false
+        //     }
+        // }],
+        tooltip: {
+            show: true,                 // 是否显示提示框
+            formatter: 'Availability 35%'      // 提示框显示内容,此处{b}表示各数据项名称，此项配置为默认显示项，{c}表示数据项的值，默认不显示，({d}%)表示数据项项占比，默认不显示。
+        },
+        series: [{
+            type: 'liquidFill',
+            // radius: '80%',
+            data: data,
+            color: ['#ff7a40', 'red', 'pink'],
+            // backgroundStyle: {
+            //     borderWidth: 5,
+            //     borderColor: '#deb140',//rgb(255,0,255,0.9)
+            //     color: '#ffc72b',//rgb(255,0,255,0.01)
+            //     shadowColor: 'rgba(0, 0, 0, 0.4)',
+            //     shadowBlur: 20
+            // },
+            backgroundStyle: {
+                borderColor: bgColor,
+                borderWidth: 1,
+                color: '#FFC72B',
+                shadowColor: 'rgba(0, 0, 0, 0.4)',
+                shadowBlur: 20
+            },
+            outline: {
+                show: false
+            },
+            // 提示框
+
+            label: {
+                // formatter: function () {
+                //     return value * 100 + '%';
+                // },
+                // fontSize: 20,
+                // normal: {
+                //     textStyle: {
+                //     }
+                // }
+                formatter: function () {
+                    return 'Table booked\n' +value * 100 + '%';
+                },
+                fontSize: 20,
+                color: '#D94854',
+                // fontFamily: 'Lobster Two',
+                insideColor: bgColor
+            },
+        }]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</body>
+</html>
